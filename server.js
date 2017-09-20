@@ -7,6 +7,7 @@ const config = require('./config')
 const categories = require('./categories')
 const posts = require('./posts')
 const comments = require('./comments')
+const menus = require('./menus')
 
 const app = express()
 
@@ -301,6 +302,19 @@ app.post('/comments/:id', bodyParser.json(), (req, res) => {
 
 app.delete('/comments/:id', (req, res) => {
     comments.disable(req.token, req.params.id)
+      .then(
+          (data) => res.send(data),
+          (error) => {
+              console.error(error)
+              res.status(500).send({
+                  error: 'There was an error.'
+              })
+          }
+      )
+})
+// Restuarant starts here ...
+app.get('/menus', (req, res) => {
+    menus.getAll(req.token)
       .then(
           (data) => res.send(data),
           (error) => {
