@@ -6,20 +6,23 @@ let db = {}
 const defaultData = {
   menus: [
       {
+        id : 100,
         name: 'Fajita plate',
         description : 'Delicioso plato de fajitas con arroz y frijoles refritos',
-        price : '$6.50',
+        price : 6.50,
         image: 'fajita_plate.jpg'
       },
       {
+        id: 110,
         name: 'Burrito',
         description : 'Un enorme burrito rellenos de tu carne favorita',
-        price : '$5.75',
+        price : 5.75,
         image: 'burrito.jpg'
       },
       {
+        id : 200,
         name: 'Flauticas',
-        price : '$8.25',
+        price : 8.25,
         description : 'Nuestro platos mas exotico, 10 deliciosas flautas con pico de gallo y aguacate',
         image: 'flauticas.jpg'
       }
