@@ -1,5 +1,5 @@
 require('dotenv').config()
-
+const _ = require('lodash');
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
@@ -8,6 +8,12 @@ const categories = require('./categories')
 const posts = require('./posts')
 const comments = require('./comments')
 const menus = require('./menus')
+// Twilio Credentials
+const accountSid = 'AC3ab39e432cbc3290100bd07d265709df';
+const authToken = 'ea7b63a0f628906fbba0a467c51aceea';
+// require the Twilio module and create a REST client
+const client = require('twilio')(accountSid, authToken);
+
 
 const app = express()
 
@@ -166,17 +172,24 @@ app.get('/posts', (req, res) => {
       )
 })
 
-app.post('/posts', bodyParser.json(), (req, res) => {
-    posts.add(req.token, req.body)
-      .then(
-          (data) => res.send(data),
-          (error) => {
-              console.error(error)
-              res.status(500).send({
-                 error: 'There was an error.'
-          })
-        }
-      )
+app.post('/checkout', bodyParser.json(), (req, res) => {
+    console.log('checkout', req.body)
+    const order = req.body;
+    const items = _.mapKeys(menus.defaultData.menus,'id');
+    const msg = order.reduce((acc,item) => {
+        acc += `${items[item.id].name} qty: ${item.qty}\n`;
+        return acc;
+    },"\n\nOrder received\n"
+
+    );
+    client.messages
+    .create({
+      to: '+18325411002',
+      from: '+18324093109',
+      body: msg,
+    })
+    .then((message) => console.log(message.sid));
+    res.send({'orderStatus' : 'Received' });
 })
 
 app.get('/posts/:id', (req, res) => {

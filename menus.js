@@ -46,5 +46,6 @@ function getAll (token) {
 }
 
 module.exports = {
-  getAll
+  getAll,
+  defaultData
 }
